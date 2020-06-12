@@ -17,6 +17,9 @@
         "typescript",
         "express"
     ],
+    "engines": {
+        "node": "12.x"
+    },
     "browserslist": [
         "defaults"
     ],
@@ -51,6 +54,7 @@
         "babel-plugin-macros": "^2.8.0",
         "core-js": "^3.6.5",
         "cors": "^2.8.5",
+        "cross-env": "^7.0.2",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "helmet": "^3.22.1",
@@ -83,7 +87,6 @@
         "babel-loader": "^8.1.0",
         "babel-plugin-emotion": "^10.0.33",
         "concurrently": "^5.2.0",
-        "cross-env": "^7.0.2",
         "css-loader": "^3.5.3",
         "cssnano": "^4.1.10",
         "eslint": "^7.2.0",
