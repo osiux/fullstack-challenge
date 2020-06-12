@@ -1,21 +1,17 @@
 import React from 'react';
 import tw from 'twin.macro';
-import ky from 'ky';
+import { Routes, Route } from 'react-router-dom';
 
-const Main = tw.main`w-1/2 text-center my-0 mx-auto text-xl`;
+import NavBar from '@client/components/NavBar';
+
+const Main = tw.main`container mx-auto`;
 
 const App = () => {
-    const fetchData = async () => {
-        const response = await ky.get('/api').json();
-
-        console.log(response);
-    };
-
     return (
         <Main>
+            <NavBar />
             <h1>My App</h1>
             <p>Welcome to my new app!</p>
-            <button onClick={() => fetchData()}>Test</button>
         </Main>
     );
 };
