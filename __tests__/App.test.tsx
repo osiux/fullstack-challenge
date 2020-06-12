@@ -7,7 +7,7 @@ describe('App', () => {
     it('mounts correctly', () => {
         render(<App />);
 
-        const title = screen.getByText('My App');
+        const title = screen.getByText('Tour Picker');
 
         expect(title).toBeInTheDocument();
     });
