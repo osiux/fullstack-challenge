@@ -1,9 +1,12 @@
+import 'reflect-metadata';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+
+import routes from './routes';
 
 dotenv.config();
 
@@ -13,26 +16,26 @@ if (!process.env.PORT) {
 
 const PORT: number = parseInt(process.env.PORT as string, 10);
 
-const app = express();
+const server = express();
 
-app.use(morgan('dev'));
-app.use(helmet());
-app.use(cors());
-app.use(express.json());
+server.use(morgan('dev'));
+server.use(helmet());
+server.use(cors());
+server.use(express.json());
 
-app.use(express.static(path.resolve('dist/client')));
+server.use(express.static(path.resolve('dist/client')));
 
-app.get('/', function (req: Request, res: Response) {
+// Serve index from client app
+server.get('/', (req: Request, res: Response) => {
     console.log(path.resolve(__dirname));
     res.sendFile('dist/client/index.html', { root: __dirname });
 });
 
-app.get('/api', function (req: Request, res: Response) {
-    res.json({
-        hello: 'world',
-    });
-});
+// API routes
+server.use('/api', routes);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server started at http://localhost:${PORT}`);
 });
+
+export { server };

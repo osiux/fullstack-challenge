@@ -1,14 +1,14 @@
 import React from 'react';
 import tw from 'twin.macro';
+import ky from 'ky';
 
 const Main = tw.main`w-1/2 text-center my-0 mx-auto text-xl`;
 
 const App = () => {
     const fetchData = async () => {
-        const response = await fetch('/api');
-        const jsonResponse = await response.json();
+        const response = await ky.get('/api').json();
 
-        console.log(jsonResponse);
+        console.log(response);
     };
 
     return (

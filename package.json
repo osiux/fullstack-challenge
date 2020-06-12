@@ -58,9 +58,14 @@
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "helmet": "^3.22.1",
+        "ky": "^0.20.0",
+        "ky-universal": "^0.7.0",
         "morgan": "^1.10.0",
+        "pg": "^8.2.1",
         "react": "^16.13.1",
-        "react-dom": "^16.13.1"
+        "react-dom": "^16.13.1",
+        "reflect-metadata": "^0.1.13",
+        "typeorm": "^0.2.25"
     },
     "devDependencies": {
         "@babel/cli": "^7.10.1",

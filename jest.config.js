@@ -6,9 +6,12 @@ module.exports = {
     coverageDirectory: 'coverage',
     coveragePathIgnorePatterns: ['/node_modules/'],
     setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-    transformIgnorePatterns: ['/node_modules/'],
     snapshotSerializers: ['jest-emotion'],
     moduleNameMapper: {
         '^@client(.*)$': '<rootDir>/src/client/$1',
+        '^@server(.*)$': '<rootDir>/src/server/$1',
     },
+    transformIgnorePatterns: [
+        'node_modules/(?!(ky)/)',
+    ],
 };

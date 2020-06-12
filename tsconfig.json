@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "lib": ["es6"],
         // Target latest version of ECMAScript.
         "target": "esnext",
         // Search under node_modules for non-relative imports.
@@ -18,6 +19,8 @@
         "jsx": "react",
         // Allow default imports from modules with no default export.
         "allowSyntheticDefaultImports": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
             "@client/*": ["./src/client/*"],
