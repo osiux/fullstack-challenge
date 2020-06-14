@@ -1,6 +1,6 @@
 module.exports = {
     purge: [
-        './src/**/*.tsx'
+        './src/client/**/*.tsx'
     ],
     theme: {
         extend: {},

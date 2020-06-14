@@ -21,6 +21,7 @@
         "allowSyntheticDefaultImports": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+        "importsNotUsedAsValues": "preserve",
         "baseUrl": ".",
         "paths": {
             "@client/*": ["./src/client/*"],
