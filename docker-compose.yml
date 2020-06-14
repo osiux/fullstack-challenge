@@ -1,0 +1,36 @@
+version: "3"
+services:
+  cache:
+    image: redis:6-alpine
+    restart: always
+    hostname: redis
+    ports:
+      - "19779:19779"
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - redis-data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+
+  db:
+    image: postgres:12-alpine
+    restart: always
+    hostname: postgres
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres-data:/var/lib/posgresql
+    environment:
+      POSTGRES_USER: tourpicker
+      POSTGRES_PASSWORD: password
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  redis-data:
+    driver: local
+  postgres-data:
+    driver: local
