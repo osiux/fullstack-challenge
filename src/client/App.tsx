@@ -2,27 +2,24 @@ import React from 'react';
 import tw from 'twin.macro';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import NavBar from '@client/components/NavBar';
+import Layout from '@client/components/Layout';
 import { UserContextProvider } from '@client/context/UserContext';
 
 import { HOME, SAVED } from '@client/constants/routes';
 
-import Home from '@client/pages/Home';
-
-const Main = tw.main`container mx-auto`;
+import Home from '@client/pages/Home/Home';
 
 const App = () => {
     return (
         <BrowserRouter>
             <UserContextProvider>
-                <Main>
-                    <NavBar />
+                <Layout>
                     <Routes>
                         <Route path={HOME}>
                             <Home />
                         </Route>
                     </Routes>
-                </Main>
+                </Layout>
             </UserContextProvider>
         </BrowserRouter>
     );

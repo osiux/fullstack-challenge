@@ -7,7 +7,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 import { HOME, SAVED } from '@client/constants/routes';
 
-const Nav = tw.nav`flex items-center bg-gray-800 p-3 flex-wrap`;
+const Nav = tw.nav`flex items-center bg-gray-800 p-3 flex-wrap col-span-3`;
 
 const Brand = styled(Link)`
     ${tw`p-2 mr-4 inline-flex items-center`};

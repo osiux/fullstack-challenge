@@ -13,6 +13,7 @@ module.exports = merge(commonConfig, {
         publicPath: '/',
     },
     devServer: {
+        port: 3000,
         hot: true,
         historyApiFallback: true,
         proxy: {

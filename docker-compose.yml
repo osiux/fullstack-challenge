@@ -1,7 +1,7 @@
 version: "3"
 services:
   cache:
-    image: redis:6-alpine
+    image: redis:5-alpine
     restart: always
     hostname: redis
     ports:

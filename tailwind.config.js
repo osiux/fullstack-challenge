@@ -3,7 +3,11 @@ module.exports = {
         './src/client/**/*.tsx'
     ],
     theme: {
-        extend: {},
+        extend: {
+            gridTemplateRows: {
+                layout: 'auto 1fr',
+            },
+        },
     },
     variants: {},
     plugins: [],

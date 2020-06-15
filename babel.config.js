@@ -19,11 +19,20 @@ module.exports = (api) => {
                 },
             ],
             '@babel/react',
+            '@emotion/babel-preset-css-prop',
         ],
         plugins: [
             'babel-plugin-macros',
             'emotion',
-            '@babel/plugin-transform-react-jsx',
+            [
+                '@emotion/babel-plugin-jsx-pragmatic',
+                {
+                    export: 'jsx',
+                    import: '__cssprop',
+                    module: '@emotion/core',
+                },
+            ],
+            ['@babel/plugin-transform-react-jsx', { pragma: '__cssprop' }],
             '@babel/proposal-class-properties',
             '@babel/proposal-object-rest-spread',
             api.env('development') && 'react-refresh/babel',
