@@ -1,4 +1,4 @@
-import React, { memo, useState, useMemo } from 'react';
+import React, { memo, useState, useMemo, useRef } from 'react';
 import styled from '@emotion/styled';
 import tw from 'twin.macro';
 import matchSorter from 'match-sorter';
@@ -38,28 +38,39 @@ const DisplayResults = ({ businesses }: DisplayResultsProps) => {
         300
     );
     const [sortBy, setSortBy] = useState('best_match');
+    const originalBusiness = useRef(businesses);
 
     const results = useMemo(() => {
-        const newResult = matchSorter(businesses, debouncedSearchTerm, {
-            keys: ['name'],
-        });
+        const newResult = matchSorter(
+            originalBusiness.current,
+            debouncedSearchTerm,
+            {
+                keys: ['name'],
+            }
+        );
 
         let sortedResults: Business[] = newResult;
 
-        switch(sortBy) {
+        switch (sortBy) {
             case 'name':
-                sortedResults = newResult.sort((a, b) => a.name.localeCompare(b.name));
+                sortedResults = newResult.sort((a, b) =>
+                    a.name.localeCompare(b.name)
+                );
                 break;
             case 'rating':
-                sortedResults = newResult.sort((a, b) => a.rating < b.rating ? 1 : -1);
+                sortedResults = newResult.sort((a, b) =>
+                    a.rating < b.rating ? 1 : -1
+                );
                 break;
             case 'distance':
-                sortedResults = newResult.sort((a, b) => a.distance > b.distance ? 1 : -1);
+                sortedResults = newResult.sort((a, b) =>
+                    a.distance > b.distance ? 1 : -1
+                );
                 break;
         }
 
         return sortedResults;
-    }, [debouncedSearchTerm, businesses, sortBy]);
+    }, [debouncedSearchTerm, sortBy]);
 
     return (
         <Container>

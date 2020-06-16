@@ -23,6 +23,7 @@ export type Business = {
     display_phone: string;
     distance: number;
     price: string;
+    url: string;
 };
 
 export type ParamsDictionary = {

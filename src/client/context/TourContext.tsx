@@ -5,9 +5,9 @@ interface TourContextProviderProps {
 }
 
 type TourState = {
+    id: string | null;
     name: string;
     ids: string[];
-    saved: boolean;
 };
 
 type AddAction = {
@@ -25,11 +25,21 @@ type SetNameAction = {
     payload: string;
 };
 
+type SetReorderedIds = {
+    type: 'SET_REORDERED_IDS';
+    payload: string[];
+};
+
 type ResetAction = {
     type: 'RESET';
 };
 
-type ActionType = AddAction | RemoveAction | SetNameAction | ResetAction;
+type ActionType =
+    | AddAction
+    | RemoveAction
+    | SetNameAction
+    | SetReorderedIds
+    | ResetAction;
 
 const tourReducer = (state: TourState, action: ActionType): TourState => {
     switch (action.type) {
@@ -44,6 +54,8 @@ const tourReducer = (state: TourState, action: ActionType): TourState => {
         }
         case 'SET_NAME':
             return { ...state, name: action.payload };
+        case 'SET_REORDERED_IDS':
+            return { ...state, ids: action.payload };
         case 'RESET':
             return tourInitialState;
         default:
@@ -52,9 +64,9 @@ const tourReducer = (state: TourState, action: ActionType): TourState => {
 };
 
 const tourInitialState: TourState = {
+    id: null,
     name: '',
     ids: [],
-    saved: false,
 };
 
 const TourContext = React.createContext<

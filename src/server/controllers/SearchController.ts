@@ -5,6 +5,8 @@ import { ParamsDictionary, SearchParams, SearchResponse } from '../types';
 
 import getBusinessById from '../helpers/getBusinessById';
 
+const MAX_SEARCH_RADIUS = 40000;
+
 export class SearchController {
     static search = async (
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,14 +27,22 @@ export class SearchController {
         params.set('limit', '21');
 
         if (radius && radius > 0) {
-            const radiusInMeters = radius * 1609.344;
-            console.log(`Converted ${radius} miles to meters. Result: ${radiusInMeters}`);
+            let radiusInMeters = Math.ceil(radius * 1609.344);
+            console.log(
+                `Converted ${radius} miles to meters. Result: ${radiusInMeters}`
+            );
+            if (radiusInMeters > MAX_SEARCH_RADIUS) {
+                console.log(
+                    `Max radius is ${MAX_SEARCH_RADIUS}. Tried ${radiusInMeters}`
+                );
+                radiusInMeters = MAX_SEARCH_RADIUS;
+            }
             params.set('radius', radiusInMeters.toString());
         }
 
         try {
             const response: SearchResponse = await ky
-                .get(`https://api.yelp.com/v3/businesses/search?term=${term}`, {
+                .get(`https://api.yelp.com/v3/businesses/search`, {
                     searchParams: params,
                     headers: {
                         Authorization: `Bearer ${process.env.YELP_API_KEY}`,

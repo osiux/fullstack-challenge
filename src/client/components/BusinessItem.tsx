@@ -10,31 +10,9 @@ import {
 
 import { Business } from '@server/types';
 
-import Rating0 from '@client/images/regular_0.png';
-import Rating1 from '@client/images/regular_1.png';
-import Rating15 from '@client/images/regular_1_half.png';
-import Rating2 from '@client/images/regular_2.png';
-import Rating25 from '@client/images/regular_2_half.png';
-import Rating3 from '@client/images/regular_3.png';
-import Rating35 from '@client/images/regular_3_half.png';
-import Rating4 from '@client/images/regular_4.png';
-import Rating45 from '@client/images/regular_4_half.png';
-import Rating5 from '@client/images/regular_5.png';
-
 import TourContext from '@client/context/TourContext';
 
-const ratingImg = {
-    r0: Rating0,
-    r1: Rating1,
-    'r1.5': Rating15,
-    r2: Rating2,
-    'r2.5': Rating25,
-    r3: Rating3,
-    'r3.5': Rating35,
-    r4: Rating4,
-    'r4.5': Rating45,
-    r5: Rating5,
-};
+import getRatingImg from '@client/utils/getRatingImg';
 
 const BusinessContainer = tw.div`bg-white shadow-lg rounded-lg overflow-hidden my-4 col-span-3 md:col-span-1 relative`;
 const Img = tw.img`w-full h-56 object-cover object-center`;
@@ -47,10 +25,10 @@ const Icon = styled(FontAwesomeIcon)`
     ${tw`mr-2`}
 `;
 const AddButton = styled.button`
-    ${tw`mx-auto bg-green-500 w-full text-white py-2 cursor-pointer absolute bottom-0`}
+    ${tw`mx-auto bg-green-500 w-full text-white py-2 cursor-pointer absolute bottom-0 hover:bg-green-700`}
 
     &.added {
-        ${tw`bg-red-500`}
+        ${tw`bg-red-500 hover:bg-red-700`}
     }
 `;
 
@@ -61,7 +39,7 @@ type BusinessItemProps = {
 const BusinessItem = ({ business }: BusinessItemProps) => {
     const [tour, dispatch] = useContext(TourContext);
 
-    const ratingImgKey = `r${business.rating}`;
+    const ratingImg = getRatingImg(business.rating);
 
     const isAdded = tour.ids.includes(business.id);
 
@@ -75,14 +53,21 @@ const BusinessItem = ({ business }: BusinessItemProps) => {
 
     return (
         <BusinessContainer>
-            <Img src={business.image_url} alt={business.name} />
-            <NameContainer>
-                <Name>{business.name}</Name>
-            </NameContainer>
+            <a
+                href={business.url}
+                target="_blank"
+                rel="noreferrer"
+                title={`Go to Yelp page for ${business.name}`}
+            >
+                <Img src={business.image_url} alt={business.name} />
+                <NameContainer>
+                    <Name>{business.name}</Name>
+                </NameContainer>
+            </a>
             <ContentContainer>
                 <P>
                     <RatingImg
-                        src={ratingImg[ratingImgKey]}
+                        src={ratingImg}
                         alt={`Rated ${business.rating} stars`}
                     />
                     based on {business.review_count} reviews
