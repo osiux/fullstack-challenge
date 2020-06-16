@@ -41,6 +41,10 @@ const server = express();
 createConnection({
     type: 'postgres',
     url: process.env.DATABASE_URL,
+    entities: ['entity/*.ts'],
+    synchronize: true,
+    // migrationsTableName: 'migrations',
+    // migrations: ['migrations/*.ts'],
 })
     .then(async () => {
         server.use(morgan('dev'));

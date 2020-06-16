@@ -1,8 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    OneToMany,
+} from 'typeorm';
 
-@Entity()
+import { Place } from './Place';
+
+@Entity('tours')
 export class Tour {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id!: number;
 
     @Column('uuid')
@@ -10,4 +18,11 @@ export class Tour {
 
     @Column()
     name!: string;
+
+    @Column()
+    @CreateDateColumn()
+    createdAt!: Date;
+
+    @OneToMany(type => Place, place => place.tour)
+    places!: Place[];
 }
