@@ -20,6 +20,11 @@ type RemoveAction = {
     payload: string;
 };
 
+type SetidAction = {
+    type: 'SET_ID';
+    payload: string;
+};
+
 type SetNameAction = {
     type: 'SET_NAME';
     payload: string;
@@ -37,6 +42,7 @@ type ResetAction = {
 type ActionType =
     | AddAction
     | RemoveAction
+    | SetidAction
     | SetNameAction
     | SetReorderedIds
     | ResetAction;
@@ -52,6 +58,8 @@ const tourReducer = (state: TourState, action: ActionType): TourState => {
 
             return { ...state, ids: newIds };
         }
+        case 'SET_ID':
+            return { ...state, id: action.payload };
         case 'SET_NAME':
             return { ...state, name: action.payload };
         case 'SET_REORDERED_IDS':
