@@ -118,7 +118,7 @@ const TourBuilder = () => {
     }, [dispatch]);
 
     const saveDisabled = status === 'loading' || tourId !== null;
-    const tourUrl = `${window.location.protocol}://${window.location.host}/tour/${tourId}`;
+    const tourUrl = `${window.location.protocol}//${window.location.host}/tour/${tourId}`;
 
     return (
         <Container>
