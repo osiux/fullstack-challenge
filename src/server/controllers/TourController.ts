@@ -19,27 +19,33 @@ export class TourController {
 
         const { user, name, places } = req.body;
 
-        const tourItem = tourRepository.create({
-            name,
-            user,
-        });
-        await tourRepository.save(tourItem);
+        const tourItem = await tourRepository
+            .createQueryBuilder()
+            .insert()
+            .into('tours')
+            .values({
+                name,
+                user,
+            })
+            .execute();
 
         const placesPromises: Partial<Business>[] = places.map(
             async (placeId: string) => {
-                const placeItem = placeRepository.create({
-                    placeId,
-                    tour: tourItem,
-                });
-
-                return await placeRepository.save(placeItem);
+                return await placeRepository
+                    .createQueryBuilder()
+                    .insert()
+                    .into('places')
+                    .values({
+                        placeId,
+                        tour: tourItem.identifiers[0].id,
+                    }).execute();
             }
         );
 
         await Promise.all(placesPromises);
 
         res.send({
-            tourId: tourItem.id
+            tourId: tourItem.identifiers[0].id,
         });
     };
 

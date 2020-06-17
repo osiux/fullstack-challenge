@@ -16,13 +16,13 @@ export class Tour {
     @Column('uuid')
     public user: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true, type: 'varchar' })
     public name: string;
 
-    @Column()
+    @Column({ type: 'timestamp' })
     @CreateDateColumn()
     public createdAt: Date;
 
-    @OneToMany(() => Place, (place) => place.tour, { cascade: true })
+    @OneToMany(() => Place, (place) => place.tour)
     public places: Place[];
 }

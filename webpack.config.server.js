@@ -17,7 +17,7 @@ module.exports = {
         alias: {
             '@client': path.resolve(__dirname, 'src/client'),
             '@server': path.resolve(__dirname, 'src/server'),
-        }
+        },
     },
     module: {
         rules: [
@@ -32,4 +32,3 @@ module.exports = {
         new ForkTsCheckerWebpackPlugin(),
     ],
 };
-

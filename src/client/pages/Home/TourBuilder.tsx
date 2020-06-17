@@ -7,14 +7,16 @@ import React, {
     useCallback,
 } from 'react';
 import tw from 'twin.macro';
-import { css } from '@emotion/core';
 import styled from '@emotion/styled';
+import { css } from '@emotion/core';
+import { useClipboard } from 'use-clipboard-copy';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faFileCode,
     faFileCsv,
     faFilePdf,
+    faClipboard,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { PostTour } from '@server/types';
@@ -32,11 +34,12 @@ const Instructions = tw.p`mb-3 text-center`;
 const NameInput = tw.input`appearance-none block w-full bg-gray-100 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`;
 const ButtonsContainer = tw.div`flex justify-between`;
 const TourOptionsContainer = tw.div`flex justify-start mb-3 items-center`;
+const LinkInput = tw.input`appearance-none block w-auto bg-gray-100 text-gray-700 border rounded py-3 px-2 ml-1 leading-tight focus:outline-none focus:bg-white`;
 const BaseButton = css`
     ${tw`cursor-pointer inline-block w-2/5 tracking-wider text-white leading-loose font-bold py-2 mb-3 rounded inline-block`};
 
     &[disabled] {
-        ${tw`bg-gray-300 text-gray-500`}
+        ${tw`bg-gray-300 text-gray-500 cursor-not-allowed`}
     }
 `;
 
@@ -64,6 +67,7 @@ const TourBuilder = () => {
     const [idsToRender, setIdsToRender] = useState(places);
     const [debouncedTourName, tourName, setTourName] = useDebounce(name, 300);
     const [doSaveTour, { status }] = useSaveTour();
+    const clipboard = useClipboard();
 
     useEffect(() => {
         setIdsToRender(places);
@@ -102,11 +106,7 @@ const TourBuilder = () => {
             places: idsToRender,
         };
 
-        doSaveTour(data, {
-            onSuccess: (data) => {
-                dispatch({ type: 'SET_ID', payload: data.tourId });
-            },
-        });
+        doSaveTour(data);
     };
 
     const onReset = useCallback(() => {
@@ -118,6 +118,7 @@ const TourBuilder = () => {
     }, [dispatch]);
 
     const saveDisabled = status === 'loading' || tourId !== null;
+    const tourUrl = `${window.location.protocol}://${window.location.host}/tour/${tourId}`;
 
     return (
         <Container>
@@ -158,39 +159,64 @@ const TourBuilder = () => {
                             </ResetButton>
                         </ButtonsContainer>
                         {tourId !== null && (
-                            <TourOptionsContainer>
-                                <strong>Download Tour as: </strong>
-                                <a
-                                    href={`/api/tours/${tourId}/download?format=pdf`}
-                                    title="Download as PDF"
-                                >
-                                    <FontAwesomeIcon
-                                        icon={faFilePdf}
-                                        size="2x"
-                                        fixedWidth
+                            <Fragment>
+                                <TourOptionsContainer>
+                                    <strong>Download Tour as: </strong>
+                                    <a
+                                        href={`/api/tours/${tourId}/download?format=pdf`}
+                                        title="Download as PDF"
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faFilePdf}
+                                            size="2x"
+                                            fixedWidth
+                                        />
+                                    </a>
+                                    <a
+                                        href={`/api/tours/${tourId}/download?format=csv`}
+                                        title="Download as CSV"
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faFileCsv}
+                                            size="2x"
+                                            fixedWidth
+                                        />
+                                    </a>
+                                    <a
+                                        href={`/api/tours/${tourId}/download?format=json`}
+                                        title="Download as JSON"
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faFileCode}
+                                            size="2x"
+                                            fixedWidth
+                                        />
+                                    </a>
+                                </TourOptionsContainer>
+                                <TourOptionsContainer>
+                                    <strong>Link:</strong>
+                                    <LinkInput
+                                        ref={clipboard.target}
+                                        type="text"
+                                        value={tourUrl}
+                                        readOnly
                                     />
-                                </a>
-                                <a
-                                    href={`/api/tours/${tourId}/download?format=csv`}
-                                    title="Download as CSV"
-                                >
-                                    <FontAwesomeIcon
-                                        icon={faFileCsv}
-                                        size="2x"
-                                        fixedWidth
-                                    />
-                                </a>
-                                <a
-                                    href={`/api/tours/${tourId}/download?format=json`}
-                                    title="Download as JSON"
-                                >
-                                    <FontAwesomeIcon
-                                        icon={faFileCode}
-                                        size="2x"
-                                        fixedWidth
-                                    />
-                                </a>
-                            </TourOptionsContainer>
+                                    <a
+                                        title="Copy to Clipboard"
+                                        href={tourUrl}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            clipboard.copy();
+                                        }}
+                                    >
+                                        <FontAwesomeIcon
+                                            size="2x"
+                                            icon={faClipboard}
+                                            fixedWidth
+                                        />
+                                    </a>
+                                </TourOptionsContainer>
+                            </Fragment>
                         )}
                     </Fragment>
                 )}
