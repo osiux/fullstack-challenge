@@ -34,9 +34,13 @@ const AddButton = styled.button`
 
 type BusinessItemProps = {
     business: Business;
+    hideAddButton?: boolean;
 };
 
-const BusinessItem = ({ business }: BusinessItemProps) => {
+const BusinessItem = ({
+    business,
+    hideAddButton = false,
+}: BusinessItemProps) => {
     const [tour, dispatch] = useContext(TourContext);
 
     const ratingImg = getRatingImg(business.rating);
@@ -89,9 +93,11 @@ const BusinessItem = ({ business }: BusinessItemProps) => {
                     </P>
                 )}
             </ContentContainer>
-            <AddButton onClick={onClick} className={isAdded ? 'added' : ''}>
-                {isAdded ? 'Remove from' : 'Add to'} Tour
-            </AddButton>
+            {!hideAddButton && (
+                <AddButton onClick={onClick} className={isAdded ? 'added' : ''}>
+                    {isAdded ? 'Remove from' : 'Add to'} Tour
+                </AddButton>
+            )}
         </BusinessContainer>
     );
 };

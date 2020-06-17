@@ -74,7 +74,11 @@ export class TourController {
             .where('tours.user = :user', { user: userId })
             .getMany();
 
-        res.send(tours);
+        const toursPromises = tours.map(async tour => await getTourById(tour.id));
+
+        const toursResponse = await Promise.all(toursPromises);
+
+        res.send(toursResponse);
     };
 
     static download = async (req: Request, res: Response) => {

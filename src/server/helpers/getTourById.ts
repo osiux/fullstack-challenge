@@ -14,19 +14,7 @@ const getTourById = async (tourId: string): Promise<TourType> => {
     });
 
     const placesPromises = tour.places.map(async (place) => {
-        const placeItem = await getBusinessById(place.placeId);
-
-        return {
-            id: placeItem.id,
-            name: placeItem.name,
-            image_url: placeItem.image_url,
-            yelp_url: placeItem.url,
-            phone: placeItem.display_phone,
-            address: placeItem.location
-                ? placeItem.location.display_address.join(', ')
-                : '',
-            rating: placeItem.rating.toString(),
-        };
+        return await getBusinessById(place.placeId);
     });
 
     const places = await Promise.all(placesPromises);

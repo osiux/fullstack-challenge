@@ -26,22 +26,12 @@ export type Business = {
     url: string;
 };
 
-export type Place = {
-    id: string;
-    name: string;
-    image_url: string;
-    yelp_url: string;
-    address: string;
-    phone: string;
-    rating: string;
-};
-
 export type Tour = {
     id: string;
     name?: string | null;
     user?: string;
     createdAt?: Date;
-    places: Place[];
+    places: Business[];
 };
 
 export type PostTour = {

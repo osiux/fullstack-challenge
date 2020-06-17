@@ -33,13 +33,13 @@ const generatePdf = async (tour: Tour) => {
             .text('Name:', 100);
         doc.font('Times-Roman').text(place.name);
         doc.font('Times-Bold').text('Address:');
-        doc.font('Times-Roman').text(place.address);
+        doc.font('Times-Roman').text(place.location.display_address.join(', '));
         doc.font('Times-Bold').text('Phone:');
-        doc.font('Times-Roman').text(place.phone || 'N/A');
+        doc.font('Times-Roman').text(place.display_phone || 'N/A');
         doc.font('Times-Bold').text('Rating:');
-        doc.font('Times-Roman').text(place.rating);
+        doc.font('Times-Roman').text(place.rating.toString());
         doc.font('Times-Bold').fillColor('blue').text('View in Yelp', {
-            link: place.yelp_url,
+            link: place.url,
         });
         doc.moveDown();
     });

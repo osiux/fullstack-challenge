@@ -22,7 +22,7 @@ const ratingImg = {
     r5: Rating5,
 };
 
-const getRatingImg = (rating: number) => {
+const getRatingImg = (rating: number |string) => {
     const ratingImgKey = `r${rating}`;
     return ratingImg[ratingImgKey];
 };

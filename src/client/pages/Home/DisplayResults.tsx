@@ -1,4 +1,4 @@
-import React, { memo, useState, useMemo, useRef } from 'react';
+import React, { memo, useState, useMemo } from 'react';
 import styled from '@emotion/styled';
 import tw from 'twin.macro';
 import matchSorter from 'match-sorter';
