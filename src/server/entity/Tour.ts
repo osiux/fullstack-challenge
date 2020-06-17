@@ -11,7 +11,7 @@ import { Place } from './Place';
 @Entity('tours')
 export class Tour {
     @PrimaryGeneratedColumn('uuid')
-    public id: number;
+    public id: string;
 
     @Column('uuid')
     public user: string;

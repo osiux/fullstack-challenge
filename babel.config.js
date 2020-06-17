@@ -32,6 +32,7 @@ module.exports = (api) => {
                     module: '@emotion/core',
                 },
             ],
+            ['@babel/plugin-proposal-decorators', { legacy: true }],
             ['@babel/plugin-transform-react-jsx', { pragma: '__cssprop' }],
             '@babel/proposal-class-properties',
             '@babel/proposal-object-rest-spread',

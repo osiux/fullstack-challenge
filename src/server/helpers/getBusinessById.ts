@@ -13,7 +13,7 @@ const getBusinessById = async (businessId: string) => {
 
     const businessFromCache = await getAsync(`business:${businessId}`);
 
-    let business: Partial<Business> = {};
+    let business: Business;
 
     if (!businessFromCache) {
         const response: Business = await ky

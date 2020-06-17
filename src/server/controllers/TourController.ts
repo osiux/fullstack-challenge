@@ -7,7 +7,6 @@ import { Business } from '../types';
 import { Tour } from '../entity/Tour';
 import { Place } from '../entity/Place';
 
-import getBusinessById from '../helpers/getBusinessById';
 import getTourById from '../helpers/getTourById';
 import generatePdf from '../helpers/generatePdf';
 

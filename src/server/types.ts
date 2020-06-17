@@ -23,11 +23,14 @@ export type Business = {
     display_phone: string;
     distance: number;
     price: string;
-    url?: string;
-    yelp_url?: string;
+    url: string;
 };
 
-export type Place = Business & {
+export type Place = {
+    id: string;
+    name: string;
+    image_url: string;
+    yelp_url: string;
     address: string;
     phone: string;
     rating: string;

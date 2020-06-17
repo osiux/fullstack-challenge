@@ -25,7 +25,7 @@ const getTourById = async (tourId: string): Promise<TourType> => {
             address: placeItem.location
                 ? placeItem.location.display_address.join(', ')
                 : '',
-            rating: placeItem.rating,
+            rating: placeItem.rating.toString(),
         };
     });
 
