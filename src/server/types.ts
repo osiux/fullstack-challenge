@@ -23,7 +23,28 @@ export type Business = {
     display_phone: string;
     distance: number;
     price: string;
-    url: string;
+    url?: string;
+    yelp_url?: string;
+};
+
+export type Place = Business & {
+    address: string;
+    phone: string;
+    rating: string;
+};
+
+export type Tour = {
+    id: string;
+    name?: string | null;
+    user?: string;
+    createdAt?: Date;
+    places: Place[];
+};
+
+export type PostTour = {
+    user: string;
+    name: string;
+    places: string[];
 };
 
 export type ParamsDictionary = {

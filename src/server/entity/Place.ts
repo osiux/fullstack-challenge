@@ -10,11 +10,11 @@ import {Tour} from './Tour';
 @Entity('places')
 export class Place {
     @PrimaryGeneratedColumn()
-    id!: number;
+    public id: number;
 
     @Column()
-    placeId!: string;
+    public placeId: string;
 
-    @ManyToOne(type => Tour, tour => tour.id)
-    tour!: Tour
+    @ManyToOne(() => Tour, tour => tour.id)
+    public tour: Tour
 }

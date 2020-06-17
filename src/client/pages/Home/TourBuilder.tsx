@@ -10,19 +10,34 @@ import tw from 'twin.macro';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faFileCode,
+    faFileCsv,
+    faFilePdf,
+} from '@fortawesome/free-solid-svg-icons';
 
-import TourBusinessItem from '@client/components/TourBusinessItem';
+import { PostTour } from '@server/types';
+import useSaveTour from '@client/hooks/api/useSaveTour';
 
 import TourContext from '@client/context/TourContext';
+import UserContext from '@client//context/UserContext';
 import useDebounce from '@client/hooks/useDebounce';
+
+import TourBusinessItem from '@client/components/TourBusinessItem';
 
 const Container = tw.aside`col-span-3 md:col-span-1 min-h-full p-3`;
 const ItemsContainer = tw.div`sticky top-0 self-start`;
 const Instructions = tw.p`mb-3 text-center`;
 const NameInput = tw.input`appearance-none block w-full bg-gray-100 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`;
 const ButtonsContainer = tw.div`flex justify-between`;
+const TourOptionsContainer = tw.div`flex justify-start mb-3 items-center`;
 const BaseButton = css`
     ${tw`cursor-pointer inline-block w-2/5 tracking-wider text-white leading-loose font-bold py-2 mb-3 rounded inline-block`};
+
+    &[disabled] {
+        ${tw`bg-gray-300 text-gray-500`}
+    }
 `;
 
 const SaveButton = styled.button`
@@ -44,13 +59,15 @@ const reorder = (list: string[], startIndex: number, endIndex: number) => {
 };
 
 const TourBuilder = () => {
-    const [{ name, ids }, dispatch] = useContext(TourContext);
-    const [idsToRender, setIdsToRender] = useState(ids);
+    const [{ id: tourId, name, places }, dispatch] = useContext(TourContext);
+    const userId = useContext(UserContext);
+    const [idsToRender, setIdsToRender] = useState(places);
     const [debouncedTourName, tourName, setTourName] = useDebounce(name, 300);
+    const [doSaveTour, { status }] = useSaveTour();
 
     useEffect(() => {
-        setIdsToRender(ids);
-    }, [ids]);
+        setIdsToRender(places);
+    }, [places]);
 
     useEffect(() => {
         dispatch({ type: 'SET_NAME', payload: debouncedTourName });
@@ -67,16 +84,30 @@ const TourBuilder = () => {
             }
 
             const newIds = reorder(
-                ids,
+                places,
                 result.source.index,
                 result.destination.index
             );
 
             setIdsToRender(newIds);
-            dispatch({ type: 'SET_REORDERED_IDS', payload: newIds });
+            dispatch({ type: 'SET_REORDERED_PLACES', payload: newIds });
         },
-        [dispatch, ids]
+        [dispatch, places]
     );
+
+    const onSave = () => {
+        const data: PostTour = {
+            user: userId,
+            name,
+            places: idsToRender,
+        };
+
+        doSaveTour(data, {
+            onSuccess: (data) => {
+                dispatch({ type: 'SET_ID', payload: data.tourId });
+            },
+        });
+    };
 
     const onReset = useCallback(() => {
         const areYouSure = confirm(
@@ -85,6 +116,8 @@ const TourBuilder = () => {
 
         if (areYouSure) dispatch({ type: 'RESET' });
     }, [dispatch]);
+
+    const saveDisabled = status === 'loading' || tourId !== null;
 
     return (
         <Container>
@@ -107,9 +140,58 @@ const TourBuilder = () => {
                             value={tourName}
                         />
                         <ButtonsContainer>
-                            <SaveButton>Save</SaveButton>
-                            <ResetButton onClick={onReset}>Reset</ResetButton>
+                            <SaveButton
+                                onClick={onSave}
+                                disabled={saveDisabled}
+                            >
+                                {status === 'loading'
+                                    ? 'Saving...'
+                                    : tourId === null
+                                    ? 'Save'
+                                    : 'Saved'}
+                            </SaveButton>
+                            <ResetButton
+                                onClick={onReset}
+                                disabled={status === 'loading'}
+                            >
+                                Reset
+                            </ResetButton>
                         </ButtonsContainer>
+                        {tourId !== null && (
+                            <TourOptionsContainer>
+                                <strong>Download Tour as: </strong>
+                                <a
+                                    href={`/api/tours/${tourId}/download?format=pdf`}
+                                    title="Download as PDF"
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faFilePdf}
+                                        size="2x"
+                                        fixedWidth
+                                    />
+                                </a>
+                                <a
+                                    href={`/api/tours/${tourId}/download?format=csv`}
+                                    title="Download as CSV"
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faFileCsv}
+                                        size="2x"
+                                        fixedWidth
+                                    />
+                                </a>
+                                <a
+                                    href={`/api/tours/${tourId}/download?format=json`}
+                                    title="Download as JSON"
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faFileCode}
+                                        size="2x"
+                                        fixedWidth
+                                    />
+                                </a>
+                            </TourOptionsContainer>
+                        )}
                     </Fragment>
                 )}
                 <DragDropContext onDragEnd={onDragEnd}>

@@ -7,7 +7,7 @@ interface TourContextProviderProps {
 type TourState = {
     id: string | null;
     name: string;
-    ids: string[];
+    places: string[];
 };
 
 type AddAction = {
@@ -31,7 +31,7 @@ type SetNameAction = {
 };
 
 type SetReorderedIds = {
-    type: 'SET_REORDERED_IDS';
+    type: 'SET_REORDERED_PLACES';
     payload: string[];
 };
 
@@ -50,20 +50,20 @@ type ActionType =
 const tourReducer = (state: TourState, action: ActionType): TourState => {
     switch (action.type) {
         case 'ADD':
-            return { ...state, ids: [...state.ids, action.payload] };
+            return { ...state, places: [...state.places, action.payload] };
         case 'REMOVE': {
-            const ids = state.ids;
+            const places = state.places;
 
-            const newIds = ids.filter((item) => item !== action.payload);
+            const newPlaces = places.filter((item) => item !== action.payload);
 
-            return { ...state, ids: newIds };
+            return { ...state, places: newPlaces };
         }
         case 'SET_ID':
             return { ...state, id: action.payload };
         case 'SET_NAME':
             return { ...state, name: action.payload };
-        case 'SET_REORDERED_IDS':
-            return { ...state, ids: action.payload };
+        case 'SET_REORDERED_PLACES':
+            return { ...state, places: action.payload };
         case 'RESET':
             return tourInitialState;
         default:
@@ -74,7 +74,7 @@ const tourReducer = (state: TourState, action: ActionType): TourState => {
 const tourInitialState: TourState = {
     id: null,
     name: '',
-    ids: [],
+    places: [],
 };
 
 const TourContext = React.createContext<

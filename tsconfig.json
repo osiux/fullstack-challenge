@@ -24,6 +24,7 @@
         "experimentalDecorators": true,
         "importsNotUsedAsValues": "preserve",
         "suppressImplicitAnyIndexErrors": true,
+        "strictPropertyInitialization": false,
         "baseUrl": ".",
         "paths": {
             "@client/*": ["./src/client/*"],

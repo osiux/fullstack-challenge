@@ -41,7 +41,7 @@ const BusinessItem = ({ business }: BusinessItemProps) => {
 
     const ratingImg = getRatingImg(business.rating);
 
-    const isAdded = tour.ids.includes(business.id);
+    const isAdded = tour.places.includes(business.id);
 
     const onClick = () => {
         if (isAdded) {

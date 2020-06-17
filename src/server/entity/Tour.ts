@@ -11,18 +11,18 @@ import { Place } from './Place';
 @Entity('tours')
 export class Tour {
     @PrimaryGeneratedColumn('uuid')
-    id!: number;
+    public id: number;
 
     @Column('uuid')
-    user!: string;
+    public user: string;
 
-    @Column()
-    name!: string;
+    @Column({ nullable: true })
+    public name: string;
 
     @Column()
     @CreateDateColumn()
-    createdAt!: Date;
+    public createdAt: Date;
 
-    @OneToMany(type => Place, place => place.tour)
-    places!: Place[];
+    @OneToMany(() => Place, (place) => place.tour, { cascade: true })
+    public places: Place[];
 }

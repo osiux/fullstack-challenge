@@ -47,7 +47,9 @@ const DisplayResults = ({ businesses }: DisplayResultsProps) => {
         300
     );
     const [sortBy, setSortBy] = useState('best_match');
-    const [filterByRating, setFilterByRating] = useState<string[]>([]);
+    const [filterByRating, setFilterByRating] = useState<string[]>(
+        Object.keys(filterByRatingItems)
+    );
 
     const results = useMemo(() => {
         const newResults = matchSorter(businesses, debouncedSearchTerm, {

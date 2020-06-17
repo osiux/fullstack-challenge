@@ -9,6 +9,9 @@ import { createConnection } from 'typeorm';
 
 import routes from './routes';
 
+import { Tour } from './entity/Tour';
+import { Place } from './entity/Place';
+
 dotenv.config();
 
 if (!process.env.PORT) {
@@ -17,31 +20,12 @@ if (!process.env.PORT) {
 
 const PORT: number = parseInt(process.env.PORT as string, 10);
 
-const allowedDomains = [
-    'localhost:3000',
-    'tourpicker.herokuapp.com',
-];
-const corsOptions = {
-    origin: (
-        origin: string | undefined,
-        callback: (err: Error | null, allow?: boolean) => void
-    ) => {
-        if(!origin) return callback(null, true);
-
-        if (allowedDomains.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-};
-
 const server = express();
 
 createConnection({
     type: 'postgres',
     url: process.env.DATABASE_URL,
-    entities: ['entity/*.ts'],
+    entities: [Tour, Place],
     synchronize: true,
     // migrationsTableName: 'migrations',
     // migrations: ['migrations/*.ts'],
@@ -49,7 +33,7 @@ createConnection({
     .then(async () => {
         server.use(morgan('dev'));
         server.use(helmet());
-        server.use(cors(corsOptions));
+        server.use(cors());
         server.use(express.json());
 
         server.use(express.static(path.resolve('dist/client')));
