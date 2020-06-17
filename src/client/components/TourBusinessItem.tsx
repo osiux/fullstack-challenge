@@ -47,9 +47,11 @@ const TourBusinessItem = ({ businessId, index }: TourBusinessItemProps) => {
                                 src={getRatingImg(business.rating)}
                                 alt={`Rated ${business.rating} stars`}
                             />
-                            <RemoveButton onClick={onClick}>
-                                Remove
-                            </RemoveButton>
+                            {id === null && (
+                                <RemoveButton onClick={onClick}>
+                                    Remove
+                                </RemoveButton>
+                            )}
                         </Fragment>
                     )}
                 </Container>

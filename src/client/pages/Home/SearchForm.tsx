@@ -20,12 +20,12 @@ const BaseButton = css`
 
 const SubmitButton = styled.button`
     ${BaseButton}
-    ${tw`bg-blue-700 mr-2`}
+    ${tw`bg-blue-700`}
 `;
 
 const ResetButton = styled.button`
     ${BaseButton}
-    ${tw`bg-gray-700`}
+    ${tw`bg-gray-700 mr-2`}
 `;
 
 export type FormData = {
@@ -45,7 +45,7 @@ const SearchForm = ({ onSubmit, onReset }: SearchFormProps) => {
     return (
         <Form onSubmit={handleSubmit(onSubmit)}>
             <InputContainer>
-                <Label htmlFor="term">Keywords</Label>
+                <Label htmlFor="term">What are you looking for?</Label>
                 <Input
                     type="search"
                     name="term"
@@ -56,13 +56,13 @@ const SearchForm = ({ onSubmit, onReset }: SearchFormProps) => {
                 />
             </InputContainer>
             <InputContainer>
-                <Label htmlFor="term">Location</Label>
+                <Label htmlFor="term">Where?</Label>
                 <Input
                     type="text"
                     name="location"
                     id="location"
                     ref={register}
-                    placeholder="Santa Monica, 90210"
+                    placeholder="Santa Monica or 90210"
                     required
                 />
             </InputContainer>
@@ -71,13 +71,13 @@ const SearchForm = ({ onSubmit, onReset }: SearchFormProps) => {
                 <Input type="number" name="radius" id="radius" ref={register} />
             </InputContainer>
             <InputContainer css={tw`flex justify-between`}>
+                <ResetButton type="reset" onClick={onReset}>
+                    Reset Search
+                </ResetButton>
                 <SubmitButton type="submit">
                     Search
                     <FontAwesomeIcon icon={faSearch} fixedWidth />
                 </SubmitButton>
-                <ResetButton type="reset" onClick={onReset}>
-                    Reset Search
-                </ResetButton>
             </InputContainer>
         </Form>
     );

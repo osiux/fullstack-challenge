@@ -93,7 +93,7 @@ const BusinessItem = ({
                     </P>
                 )}
             </ContentContainer>
-            {!hideAddButton && (
+            {tour.id === null && !hideAddButton && (
                 <AddButton onClick={onClick} className={isAdded ? 'added' : ''}>
                     {isAdded ? 'Remove from' : 'Add to'} Tour
                 </AddButton>
