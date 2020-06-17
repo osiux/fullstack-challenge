@@ -5,6 +5,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const commonConfig = require('./webpack.config.common');
 
 module.exports = merge(commonConfig, {
+    output: {
+        publicPath: '/',
+    },
     mode: 'production',
     optimization: {
         splitChunks: {

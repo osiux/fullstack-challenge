@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
+import * as fs from 'fs';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -26,7 +27,7 @@ createConnection({
     type: 'postgres',
     url: process.env.DATABASE_URL,
     entities: [Tour, Place],
-    synchronize: true,
+    // synchronize: true,
     // migrationsTableName: 'migrations',
     // migrations: ['migrations/*.ts'],
 })
@@ -38,14 +39,13 @@ createConnection({
 
         server.use(express.static(path.resolve('dist/client')));
 
-        // Serve index from client app
-        server.get('/', (req: Request, res: Response) => {
-            console.log(path.resolve(__dirname));
-            res.sendFile('dist/client/index.html', { root: __dirname });
-        });
-
         // API routes
         server.use('/api', routes);
+
+        // Serve index from client app
+        server.get('*', (req: Request, res: Response) => {
+            res.sendFile(path.join(__dirname, 'app/dist/client/index.html'));
+        });
 
         server.listen(PORT, () => {
             console.log(`🚀 Server started at http://localhost:${PORT}`);

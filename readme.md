@@ -1,15 +1,11 @@
-# React App Skeleton
+# FullStack Challenge
 
-## What is this?
+Express + React App, written in typescript, to search for places using Yelp API and build your own tour.
 
-I don't want to spend much time with the initial setup for a React app, so this is the skeleton with all the utilities I like to have.
+## Requirements
 
-## What does it include?
+NodeJS v12
 
-- Typescript
-- TailwindCSS
-- Emotion with tailwind macro
-- Jest
-- Eslint
-- Prettier
-- Separate Webpack conf for prod/dev
+## Local development
+
+Run `npm i` to install dependencies and `npm run dev` to run local servers. You need to have a Redis and Postgres instances installed and fill an `.env` file based on `.env.example`. IF you want, is possible to run the services locally with docker running `docker-compose up`. 
