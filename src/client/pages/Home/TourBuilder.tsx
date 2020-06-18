@@ -9,15 +9,8 @@ import React, {
 import tw from 'twin.macro';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
-import { useClipboard } from 'use-clipboard-copy';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faFileCode,
-    faFileCsv,
-    faFilePdf,
-    faClipboard,
-} from '@fortawesome/free-solid-svg-icons';
+
 
 import { PostTour } from '@server/types';
 import useSaveTour from '@client/hooks/api/useSaveTour';
@@ -26,6 +19,7 @@ import TourContext from '@client/context/TourContext';
 import UserContext from '@client//context/UserContext';
 import useDebounce from '@client/hooks/useDebounce';
 
+import TourActions from '@client/components/TourActions';
 import TourBusinessItem from '@client/components/TourBusinessItem';
 
 const Container = tw.aside`col-span-3 md:col-span-1 min-h-full p-3`;
@@ -33,8 +27,7 @@ const ItemsContainer = tw.div`sticky top-0 self-start`;
 const Instructions = tw.p`mb-3 text-center`;
 const NameInput = tw.input`appearance-none block w-full bg-gray-100 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`;
 const ButtonsContainer = tw.div`flex justify-between`;
-const TourOptionsContainer = tw.div`flex justify-start mb-3 items-center`;
-const LinkInput = tw.input`appearance-none block w-auto bg-gray-100 text-gray-700 border rounded py-3 px-2 ml-1 leading-tight focus:outline-none focus:bg-white`;
+const DropContainer = tw.div`mt-3`;
 const BaseButton = css`
     ${tw`cursor-pointer inline-block w-2/5 tracking-wider text-white leading-loose font-bold py-2 mb-3 rounded inline-block`};
 
@@ -67,7 +60,6 @@ const TourBuilder = () => {
     const [idsToRender, setIdsToRender] = useState(places);
     const [debouncedTourName, tourName, setTourName] = useDebounce(name, 300);
     const [doSaveTour, { status }] = useSaveTour();
-    const clipboard = useClipboard();
 
     useEffect(() => {
         setIdsToRender(places);
@@ -118,7 +110,6 @@ const TourBuilder = () => {
     }, [dispatch]);
 
     const saveDisabled = status === 'loading' || tourId !== null;
-    const tourUrl = `${window.location.protocol}//${window.location.host}/tour/${tourId}`;
 
     return (
         <Container>
@@ -159,71 +150,14 @@ const TourBuilder = () => {
                             </ResetButton>
                         </ButtonsContainer>
                         {tourId !== null && (
-                            <Fragment>
-                                <TourOptionsContainer>
-                                    <strong>Download Tour as: </strong>
-                                    <a
-                                        href={`/api/tours/${tourId}/download?format=pdf`}
-                                        title="Download as PDF"
-                                    >
-                                        <FontAwesomeIcon
-                                            icon={faFilePdf}
-                                            size="2x"
-                                            fixedWidth
-                                        />
-                                    </a>
-                                    <a
-                                        href={`/api/tours/${tourId}/download?format=csv`}
-                                        title="Download as CSV"
-                                    >
-                                        <FontAwesomeIcon
-                                            icon={faFileCsv}
-                                            size="2x"
-                                            fixedWidth
-                                        />
-                                    </a>
-                                    <a
-                                        href={`/api/tours/${tourId}/download?format=json`}
-                                        title="Download as JSON"
-                                    >
-                                        <FontAwesomeIcon
-                                            icon={faFileCode}
-                                            size="2x"
-                                            fixedWidth
-                                        />
-                                    </a>
-                                </TourOptionsContainer>
-                                <TourOptionsContainer>
-                                    <strong>Link:</strong>
-                                    <LinkInput
-                                        ref={clipboard.target}
-                                        type="text"
-                                        value={tourUrl}
-                                        readOnly
-                                    />
-                                    <a
-                                        title="Copy to Clipboard"
-                                        href={tourUrl}
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            clipboard.copy();
-                                        }}
-                                    >
-                                        <FontAwesomeIcon
-                                            size="2x"
-                                            icon={faClipboard}
-                                            fixedWidth
-                                        />
-                                    </a>
-                                </TourOptionsContainer>
-                            </Fragment>
+                            <TourActions tourId={tourId} />
                         )}
                     </Fragment>
                 )}
                 <DragDropContext onDragEnd={onDragEnd}>
                     <Droppable droppableId="list">
                         {(provided) => (
-                            <div
+                            <DropContainer
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
                             >
@@ -235,7 +169,7 @@ const TourBuilder = () => {
                                     />
                                 ))}
                                 {provided.placeholder}
-                            </div>
+                            </DropContainer>
                         )}
                     </Droppable>
                 </DragDropContext>

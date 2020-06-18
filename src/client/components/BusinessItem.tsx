@@ -14,6 +14,8 @@ import TourContext from '@client/context/TourContext';
 
 import getRatingImg from '@client/utils/getRatingImg';
 
+import TourActions from '@client/components/TourActions';
+
 const BusinessContainer = tw.div`bg-white shadow-lg rounded-lg overflow-hidden my-4 col-span-3 md:col-span-1 relative`;
 const Img = tw.img`w-full h-56 object-cover object-center`;
 const NameContainer = tw.div`flex items-center px-6 py-3 bg-gray-900 w-full`;
